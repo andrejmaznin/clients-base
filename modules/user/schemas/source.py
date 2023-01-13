@@ -16,6 +16,7 @@ class UserSourceSchema(PostgreSQLMixin, BaseModel):
 
     firstname: str
     lastname: str
+    password: str
     phone_number: Optional[str] = None
     email: str
     birthdate: date

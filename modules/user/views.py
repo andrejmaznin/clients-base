@@ -13,8 +13,13 @@ class CreateUserResponseSchema:
 
 @router.post('/register', response_model=UserResponseSchema)
 async def register(data: CreateUserRequestSchema):
+    
+    payload = data.dict(exclude={'user_type'})
+
+    payload["password"]
+
     user = UserSourceSchema(
-        **data.dict(exclude={'user_type'})
+        **payload
     )
     await user.insert()
 

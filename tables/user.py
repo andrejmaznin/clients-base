@@ -17,6 +17,10 @@ def create_table(metadata: MetaData) -> Table:
             String
         ),
         Column(
+            'password_hash',
+            String
+        ),
+        Column(
             'lastname',
             String
         ),

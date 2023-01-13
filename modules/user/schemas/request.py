@@ -7,6 +7,7 @@ from pydantic import BaseModel
 class CreateUserRequestSchema(BaseModel):
     firstname: str
     lastname: str
+    password: str
     phone_number: Optional[str] = None
     email: str
     birthdate: date

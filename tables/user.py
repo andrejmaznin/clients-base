@@ -1,4 +1,4 @@
-from sqlalchemy import Column, text, MetaData, Table, String, TIMESTAMP, Boolean
+from sqlalchemy import Column, text, MetaData, Table, String, DATE, Boolean
 from sqlalchemy.dialects.postgresql import UUID
 
 
@@ -34,7 +34,7 @@ def create_table(metadata: MetaData) -> Table:
         ),
         Column(
             'birthdate',
-            TIMESTAMP
+            DATE
         ),
         Column(
             'country',

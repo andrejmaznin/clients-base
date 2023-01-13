@@ -1,9 +1,10 @@
-from fastapi import APIRouter
-
+from fastapi import APIRouter, status
+from fastapi.responses import JSONResponse
 from modules.user.schemas.request import CreateUserRequestSchema
 from modules.user.schemas.response import UserResponseSchema
 from modules.user.schemas.source import UserSourceSchema
 from .services import get_password_hash
+from asyncpg.exceptions import UniqueViolationError
 
 router = APIRouter()
 
@@ -18,9 +19,13 @@ async def register(data: CreateUserRequestSchema):
 
     payload["password"] = get_password_hash(payload.get("password", None))
 
-    user = UserSourceSchema(
-        **payload
-    )
-    await user.insert()
+    try:
+        user = UserSourceSchema(
+            **payload
+        )
+        await user.insert()
 
-    return user.get_response()
+        return user.get_response()
+    except UniqueViolationError as uniq:
+
+        return JSONResponse(content=uniq.as_dict().get("detail"), status_code=status.HTTP_409_CONFLICT)

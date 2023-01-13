@@ -1,4 +1,4 @@
-from sqlalchemy import Column, text, MetaData, Table, String, DATE, Boolean
+from sqlalchemy import Column, text, MetaData, Table, String, Boolean, DATE, Integer
 from sqlalchemy.dialects.postgresql import UUID
 
 
@@ -17,7 +17,7 @@ def create_table(metadata: MetaData) -> Table:
             String
         ),
         Column(
-            'password_hash',
+            'password',
             String
         ),
         Column(

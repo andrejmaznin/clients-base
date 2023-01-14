@@ -1,11 +1,8 @@
 from lib.postgresql import get_connection
 from tables import user as user_table
 from lib.security.password import verify_password
-from .schemas.response import UserResponseSchema
-from uuid import UUID
+from .schemas.authuser import AuthUser
 
-class AuthUser(UserResponseSchema):
-    password: str
 
 async def authenticate_user(email: str, password: str) -> AuthUser | None:
     query = user_table.select().where(user_table.c.email == email)

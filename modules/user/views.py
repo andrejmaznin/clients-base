@@ -1,24 +1,24 @@
 from fastapi import APIRouter, Depends
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm 
+from fastapi.security import OAuth2PasswordBearer 
 from modules.user.schemas.request import CreateUserRequestSchema
 from modules.user.schemas.response import UserResponseSchema
 from modules.user.schemas.source import UserSourceSchema
 from lib.security.password import get_password_hash
 from asyncpg.exceptions import UniqueViolationError
-from .authenticate_user import authenticate_user
-from lib.security.jwt.token import create_access_token, get_current_user
-from .exceptions import UniqueExecption, InvalidUser
+from lib.security.jwt.token import get_current_user
+from .exceptions import UniqueExecption
+
 
 router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/token")
+
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')
 
 
 @router.post('/register', response_model=UserResponseSchema)
 async def register(data: CreateUserRequestSchema):
-    
     payload = data.dict(exclude={'user_type'})
 
-    payload["password"] = get_password_hash(payload.get("password", None))
+    payload['password'] = get_password_hash(payload.get('password', None))
 
     try:
         user = UserSourceSchema(
@@ -31,18 +31,8 @@ async def register(data: CreateUserRequestSchema):
         raise UniqueExecption()
 
 
-@router.post("/token")
-async def token(form_data: OAuth2PasswordRequestForm = Depends()):
-    user = await authenticate_user(email=form_data.username, password=form_data.password)
-    print(user)
-    if user:
-        token = create_access_token(user.dict())
-        if token:
-            return {"access_token": token, "token_type": "bearer"}
-    else:
-        raise InvalidUser()
 
-@router.get("/login")
+@router.get('/login')
 async def login(token: str = Depends(oauth2_scheme)):
     user = await get_current_user(token=token)
     if user:

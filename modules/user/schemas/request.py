@@ -14,6 +14,3 @@ class CreateUserRequestSchema(BaseModel):
     country: Optional[str] = None
     city: Optional[str] = None
     avatar_url: Optional[str] = None
-
-    class Config:
-        orm_mode = True

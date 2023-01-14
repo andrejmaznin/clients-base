@@ -63,4 +63,5 @@ def create_table(metadata: MetaData) -> Table:
             default=False
         )
     )
+
     return user

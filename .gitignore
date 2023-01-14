@@ -3,4 +3,5 @@
 __pycache__
 .DS_Store
 /venv
-/migrations/versions
+/.vs_code
+alembic.ini

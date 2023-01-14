@@ -1,20 +1,16 @@
-from fastapi import APIRouter, status
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm 
 from modules.user.schemas.request import CreateUserRequestSchema
 from modules.user.schemas.response import UserResponseSchema
 from modules.user.schemas.source import UserSourceSchema
-<<<<<<< Updated upstream
-from .services import get_password_hash
-=======
-from lib.security import password
->>>>>>> Stashed changes
+from lib.security.password import get_password_hash
 from asyncpg.exceptions import UniqueViolationError
-from lib.postgresql import get_connection
-from tables import user as user_table
-from lib.security.jwt.token import create_access_token
-
+from .authenticate_user import authenticate_user
+from lib.security.jwt.token import create_access_token, get_current_user
+from .exceptions import UniqueExecption, InvalidUser
 
 router = APIRouter()
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/token")
 
 
 @router.post('/register', response_model=UserResponseSchema)
@@ -22,7 +18,7 @@ async def register(data: CreateUserRequestSchema):
     
     payload = data.dict(exclude={'user_type'})
 
-    payload["password"] = password.get_password_hash(payload.get("password", None))
+    payload["password"] = get_password_hash(payload.get("password", None))
 
     try:
         user = UserSourceSchema(
@@ -32,18 +28,22 @@ async def register(data: CreateUserRequestSchema):
 
         return user.get_response()
     except UniqueViolationError as uniq:
+        raise UniqueExecption()
 
-        return JSONResponse(content=uniq.as_dict().get("detail"), status_code=status.HTTP_409_CONFLICT)
 
-
-@router.get("/auth")
-async def auth(email: str, password: str):
-    query = user_table.select().where(user_table.c.email == email)
-    user = await get_connection().fetch_one(query=query)
+@router.post("/token")
+async def token(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = await authenticate_user(email=form_data.username, password=form_data.password)
+    print(user)
     if user:
-        user = dict(user._mapping)
-        password_hash = user.get("password")
-        if password_hash != None and verify_password(password, password_hash) == True:
-            token = create_access_token(user)
-            if token:
-                return JSONResponse({"token": token})
+        token = create_access_token(user.dict())
+        if token:
+            return {"access_token": token, "token_type": "bearer"}
+    else:
+        raise InvalidUser()
+
+@router.get("/login")
+async def login(token: str = Depends(oauth2_scheme)):
+    user = await get_current_user(token=token)
+    if user:
+        return user

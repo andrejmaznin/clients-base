@@ -1,15 +1,16 @@
-from fastapi import APIRouter, status
-from fastapi.responses import JSONResponse
+from fastapi import APIRouter, Depends
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm 
 from modules.user.schemas.request import CreateUserRequestSchema
 from modules.user.schemas.response import UserResponseSchema
 from modules.user.schemas.source import UserSourceSchema
-from lib.security.password.password_crypt import get_password_hash
+from lib.security.password import get_password_hash
 from asyncpg.exceptions import UniqueViolationError
+from .authenticate_user import authenticate_user
+from lib.security.jwt.token import create_access_token, get_current_user
+from .exceptions import UniqueExecption, InvalidUser
 
 router = APIRouter()
-
-class CreateUserResponseSchema:
-    pass
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/token")
 
 
 @router.post('/register', response_model=UserResponseSchema)
@@ -27,5 +28,22 @@ async def register(data: CreateUserRequestSchema):
 
         return user.get_response()
     except UniqueViolationError as uniq:
+        raise UniqueExecption()
 
-        return JSONResponse(content=uniq.as_dict().get("detail"), status_code=status.HTTP_409_CONFLICT)
+
+@router.post("/token")
+async def token(form_data: OAuth2PasswordRequestForm = Depends()):
+    user = await authenticate_user(email=form_data.username, password=form_data.password)
+    print(user)
+    if user:
+        token = create_access_token(user.dict())
+        if token:
+            return {"access_token": token, "token_type": "bearer"}
+    else:
+        raise InvalidUser()
+
+@router.get("/login")
+async def login(token: str = Depends(oauth2_scheme)):
+    user = await get_current_user(token=token)
+    if user:
+        return user

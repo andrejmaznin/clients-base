@@ -1,11 +1,11 @@
 from datetime import date
 from typing import Optional
-from uuid import UUID
+
 from pydantic import BaseModel
 
 
 class UserResponseSchema(BaseModel):
-    id: UUID
+    id: str
 
     firstname: str
     lastname: str
@@ -17,6 +17,3 @@ class UserResponseSchema(BaseModel):
     avatar_url: Optional[str] = None
     blocked: bool = False
     confirmed: bool = False
-
-    class Config:
-        orm_mode = True

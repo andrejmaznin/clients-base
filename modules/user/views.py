@@ -16,7 +16,7 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/user/token")
 @router.post('/register', response_model=UserResponseSchema)
 async def register(data: CreateUserRequestSchema):
     
-    payload = data.dict(exclude={'user_type'})
+    payload = data.dict()
 
     payload["password"] = get_password_hash(payload.get("password", None))
 

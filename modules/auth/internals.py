@@ -1,4 +1,5 @@
-from lib.security.password import verify_password
+from lib.security.passwords import verify_password
+
 from modules.user.schemas.source import UserSourceSchema
 
 

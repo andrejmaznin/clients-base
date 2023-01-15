@@ -1,8 +1,6 @@
 from jose import JWTError, jwt
 from os import getenv
-from tables import user
-from lib.postgresql import get_connection
-from .schemas.user import User
+from modules.user.schemas.source import UserSourceSchema, user
 from .exceptions import DecodeException
 
 ALGORITHM = 'HS256'
@@ -18,20 +16,14 @@ def create_access_token(data: dict) -> str | None:
     return None
 
 
-async def get_current_user(token: str) -> None | User:
+async def get_current_user(token: str) -> UserSourceSchema | None:
     if SECRET_KEY:
         try:
-            payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        
-            query = user.select().where(
-                user.c.id == payload.get('id'), 
-                user.c.email == payload.get('email'),
-                user.c.phone_number == payload.get('phone_number'),
-            )
+            uuid = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get('id')
             
-            entity = await get_connection().fetch_one(query)
-            if entity:
-                return User.from_orm(entity)
+            if uuid:
+                return await UserSourceSchema.myget(user.c.id==uuid)
+
         except JWTError as e:
             raise DecodeException()
     return None

@@ -1,18 +1,23 @@
 from asyncpg.exceptions import UniqueViolationError
-from fastapi import APIRouter, status
-from fastapi.responses import JSONResponse
+<< << << < HEAD
 
 from lib.security.passwords import get_password_hash
+== == == =
+from fastapi import APIRouter
+
+from lib.security.password import get_password_hash
 from modules.user.schemas.request import CreateUserRequestSchema
 from modules.user.schemas.response import UserResponseSchema
 from modules.user.schemas.source import UserSourceSchema
+from .exceptions import UniqueExecption
+>> >> >> > auth
 
 router = APIRouter()
 
 
 @router.post('/register', response_model=UserResponseSchema)
 async def register(data: CreateUserRequestSchema):
-    payload = data.dict()
+    payload = data.dict(exclude={'user_type'})
 
     payload['password'] = get_password_hash(payload.get('password', None))
 
@@ -23,5 +28,5 @@ async def register(data: CreateUserRequestSchema):
         await user.insert()
         return user.get_response()
 
-    except UniqueViolationError as uniq:
-        return JSONResponse(content=uniq.as_dict().get('detail'), status_code=status.HTTP_409_CONFLICT)
+    except UniqueViolationError:
+        raise UniqueExecption()

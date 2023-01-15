@@ -1,10 +1,9 @@
 from datetime import date
 from typing import Optional
 from uuid import UUID
-
 from pydantic import BaseModel
 
-from lib.postgresql.mixin import PostgreSQLMixin
+from lib.postgresql.mixin import PostgreSQLMixin, get_connection
 from lib.postgresql.utils import postgresql
 from modules.user.schemas.response import UserResponseSchema
 from tables import user
@@ -26,6 +25,10 @@ class UserSourceSchema(PostgreSQLMixin, BaseModel):
     blocked: bool = False
     confirmed: bool = False
 
+    class Config:
+        orm_mode = True
+
+
     def get_response(self):
         return UserResponseSchema(
             id=str(self.id),
@@ -40,3 +43,11 @@ class UserSourceSchema(PostgreSQLMixin, BaseModel):
             blocked=self.blocked,
             confirmed=self.confirmed
         )
+
+
+    @classmethod
+    async def get_by_email(cls, email: str):
+        query = cls.table.select().where(cls.table.c.email==email)
+        entity = await get_connection().fetch_one(query=query)
+        return cls.from_orm(entity)
+        

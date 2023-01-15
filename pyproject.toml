@@ -4,6 +4,7 @@ version = "0.1.0"
 description = ""
 authors = ["GGlamer <azamat201760@yandex.ru>"]
 readme = "README.md"
+packages = [{include = "clients_base"}]
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -16,6 +17,8 @@ asyncpg = "^0.27.0"
 psycopg2 = "^2.9.5"
 bcrypt = "^4.0.1"
 alembic = "^1.9.1"
+python-multipart = "^0.0.5"
+jose = "^1.0.0"
 
 
 [build-system]

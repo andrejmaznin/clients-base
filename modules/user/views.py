@@ -1,16 +1,11 @@
-from asyncpg.exceptions import UniqueViolationError
-<< << << < HEAD
-
-from lib.security.passwords import get_password_hash
-== == == =
+from asyncpg import UniqueViolationError
 from fastapi import APIRouter
 
-from lib.security.password import get_password_hash
+from lib.security.passwords import get_password_hash
 from modules.user.schemas.request import CreateUserRequestSchema
 from modules.user.schemas.response import UserResponseSchema
 from modules.user.schemas.source import UserSourceSchema
 from .exceptions import UniqueExecption
->> >> >> > auth
 
 router = APIRouter()
 

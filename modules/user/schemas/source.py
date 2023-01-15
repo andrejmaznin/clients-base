@@ -51,3 +51,8 @@ class UserSourceSchema(PostgreSQLMixin, BaseModel):
         entity = await get_connection().fetch_one(query=query)
         return cls.from_orm(entity)
         
+
+    async def delete(self):
+        query = self.table.delete().where(self.table.c.id==self.id)
+        await get_connection().execute(query=query)
+        return True

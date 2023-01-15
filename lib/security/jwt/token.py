@@ -22,8 +22,9 @@ async def get_current_user(token: str) -> UserSourceSchema | None:
             user_id = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get('id')
             
             if user_id:
-                return await UserSourceSchema.get(user_id)
-
+                user = await UserSourceSchema.get(user_id)
+                if user:
+                    return user
         except JWTError as e:
             raise DecodeException()
     return None

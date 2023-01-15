@@ -29,7 +29,8 @@ class PostgreSQLMixin(BaseModel):
     async def get(cls, id_: Union[UUID, str]):
         query = cls.table.select().where(cls.table.c.id==id_)
         entity = await get_connection().fetch_one(query)
-        
+        if entity is None:
+            return None
         return cls(**entity)
     
     

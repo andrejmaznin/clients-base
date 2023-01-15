@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends
 from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer 
 from lib.security.jwt.token import create_access_token
-from .authenticate_user import authenticate_user
+from .internals import authenticate_user
 from .exceptions import InvalidCredentials
 from lib.security.jwt.token import get_current_user
 from modules.user.schemas.response import UserResponseSchema

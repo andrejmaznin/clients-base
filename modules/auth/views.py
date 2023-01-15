@@ -25,4 +25,4 @@ async def token(form_data: OAuth2PasswordRequestForm = Depends()):
 async def login(token: str = Depends(oauth2_scheme)):
     user = await get_current_user(token=token)
     if user:
-        return user
+        return user.get_response()

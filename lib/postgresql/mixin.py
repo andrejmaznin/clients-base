@@ -34,13 +34,6 @@ class PostgreSQLMixin(BaseModel):
             return None
         return cls(**entity)
 
-    
-    @classmethod
-    async def myget(cls, *whereclause):
-        query = cls.table.select().where(*whereclause)
-        entity = await get_connection().fetch_one(query)
-        
-        return cls(**entity)
 
     @transaction
     async def delete(self):
@@ -49,11 +42,11 @@ class PostgreSQLMixin(BaseModel):
         return True
 
     @transaction
-    async def update(self, payload: dict):
+    async def update(self, **kwargs):
         query = self.table.update().where(self.table.c.id==self.id)
         await get_connection().execute(
             query=query,
-            values=payload
+            values=kwargs
         )
         entity = await get_connection().fetch_one(self.table.select().where(self.table.c.id==self.id))
         return self.from_orm(entity)

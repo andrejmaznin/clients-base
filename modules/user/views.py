@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from modules.user.schemas.request import CreateUserRequestSchema, UpdateUserRequestSchema
 from modules.user.schemas.response import UserResponseSchema
 from modules.user.schemas.source import UserSourceSchema
-from lib.security.password import get_password_hash
+from lib.security.passwords import get_password_hash
 from lib.security.jwt.token import get_current_user
 from asyncpg.exceptions import UniqueViolationError
 from .exceptions import UniqueException, ObjectExistException

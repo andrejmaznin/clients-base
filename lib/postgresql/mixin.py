@@ -25,6 +25,7 @@ class PostgreSQLMixin(BaseModel):
         )
         return self
 
+
     @classmethod
     async def get(cls, id_: Union[UUID, str]):
         query = cls.table.select().where(cls.table.c.id==id_)
@@ -32,7 +33,7 @@ class PostgreSQLMixin(BaseModel):
         if entity is None:
             return None
         return cls(**entity)
-    
+
     
     @classmethod
     async def myget(cls, *whereclause):
@@ -41,3 +42,18 @@ class PostgreSQLMixin(BaseModel):
         
         return cls(**entity)
 
+    @transaction
+    async def delete(self):
+        query = self.table.delete().where(self.table.c.id==self.id)
+        await get_connection().execute(query=query)
+        return True
+
+    @transaction
+    async def update(self, payload: dict):
+        query = self.table.update().where(self.table.c.id==self.id)
+        await get_connection().execute(
+            query=query,
+            values=payload
+        )
+        entity = await get_connection().fetch_one(self.table.select().where(self.table.c.id==self.id))
+        return self.from_orm(entity)

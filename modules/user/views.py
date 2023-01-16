@@ -2,10 +2,10 @@ from fastapi import APIRouter, Depends
 from modules.user.schemas.request import CreateUserRequestSchema, UpdateUserRequestSchema
 from modules.user.schemas.response import UserResponseSchema
 from modules.user.schemas.source import UserSourceSchema
-from lib.security.password import get_password_hash
+from lib.security.passwords import get_password_hash
 from lib.security.jwt.token import get_current_user
 from asyncpg.exceptions import UniqueViolationError
-from .exceptions import UniqueException, ObjectExistException
+from .exceptions import UniqueException, UserNotFoundException
 from modules.auth.views import oauth2_scheme
 
 
@@ -36,7 +36,7 @@ async def delete(token: str = Depends(oauth2_scheme)):
         if await user.delete():
             return {'message': 'ok'}
     
-    raise ObjectExistException()
+    raise UserNotFoundException()
 
 
 @router.put('/update', response_model=UserResponseSchema, status_code=200)
@@ -51,4 +51,4 @@ async def update(data: UpdateUserRequestSchema, token: str = Depends(oauth2_sche
         u = await user.update(**payload)
         return u.get_response()
         
-    raise ObjectExistException()
+    raise UserNotFoundException()

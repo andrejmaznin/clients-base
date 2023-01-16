@@ -1,11 +1,11 @@
 from fastapi import APIRouter, Depends
-from fastapi.security import OAuth2PasswordRequestForm, OAuth2PasswordBearer
-
 from lib.security.jwt.token import create_access_token
+from .internals import authenticate_user
+from .exceptions import InvalidCredentials
 from lib.security.jwt.token import get_current_user
 from modules.user.schemas.response import UserResponseSchema
-from .exceptions import InvalidCredentials
-from .internals import authenticate_user
+from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+
 
 router = APIRouter()
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')
@@ -27,3 +27,4 @@ async def login(token: str = Depends(oauth2_scheme)):
     user = await get_current_user(token=token)
     if user:
         return user.get_response()
+

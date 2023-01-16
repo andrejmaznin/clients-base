@@ -14,3 +14,14 @@ class CreateUserRequestSchema(BaseModel):
     country: Optional[str] = None
     city: Optional[str] = None
     avatar_url: Optional[str] = None
+
+class UpdateUserRequestSchema(BaseModel):
+    firstname: str | None
+    lastname: str | None
+    password: str | None
+    phone_number: str | None
+    email: str | None
+    birthdate: date | None
+    country: str | None
+    city: str | None
+    avatar_url: str | None

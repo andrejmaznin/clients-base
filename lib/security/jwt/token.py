@@ -1,7 +1,5 @@
-from os import getenv
-
 from jose import JWTError, jwt
-
+from os import getenv
 from modules.user.schemas.source import UserSourceSchema
 from .exceptions import DecodeException
 
@@ -21,11 +19,13 @@ def create_access_token(data: dict) -> str | None:
 async def get_current_user(token: str) -> UserSourceSchema | None:
     if SECRET_KEY:
         try:
-            user_id = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get('id')
-
-            if user_id:
-                return await UserSourceSchema.get(user_id)
-
+            user_id = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM]).get('id')    
         except JWTError as e:
             raise DecodeException()
+        
+        if user_id:
+            user = await UserSourceSchema.get(user_id)
+            if user:
+                return user
     return None
+

@@ -17,14 +17,6 @@ def create_table(metadata: MetaData) -> Table:
             ForeignKey('user.id')
         ),
         Column(
-            'firstname',
-            ForeignKey('user.firstname')
-        ),
-        Column(
-            'lastname',
-            ForeignKey('user.lastname')
-        ),
-        Column(
             'occupation',
             ForeignKey('occupation.occupation')
         ),
@@ -54,53 +46,44 @@ def create_table(metadata: MetaData) -> Table:
         )
     )
     Index(
-        'user_idx',
-        client.c.user, postgresql_using='gin',
+        'income_idx',
+        client.c.income,
         postgresql_ops={
             'description': 'gin_trgm_ops',
-        }
-    )
-    Index(
-        'firstname_idx',
-        client.c.firstname, postgresql_using='gin',
-        postgresql_ops={
-            'description': 'gin_trgm_ops',
-        }
-    )
-    Index(
-        'lastname_idx',
-        client.c.lastname, postgresql_using='gin',
-        postgresql_ops={
-            'description': 'gin_trgm_ops',
-        }
+        },
+        postgresql_using='gin'
     )
     Index(
         'occupation_idx',
-        client.c.occupation, postgresql_using='gin',
+        client.c.occupation,
         postgresql_ops={
             'description': 'gin_trgm_ops',
-        }
+        },
+        postgresql_using='gin'
     )
     Index(
         'work_place_idx',
-        client.c.work_place, postgresql_using='gin',
+        client.c.work_place,
         postgresql_ops={
             'description': 'gin_trgm_ops',
-        }
+        },
+        postgresql_using='gin'
     )
     Index(
         'imgs_idx',
-        client.c.imgs, postgresql_using='gin',
+        client.c.imgs,
         postgresql_ops={
             'description': 'gin_trgm_ops',
-        }
+        },
+        postgresql_using='gin'
     )
     Index(
         'email_idx',
-        client.c.email, postgresql_using='gin',
+        client.c.email,
         postgresql_ops={
             'description': 'gin_trgm_ops',
-        }
+        },
+        postgresql_using='gin'
     )
 
     return client

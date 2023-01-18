@@ -1,4 +1,4 @@
-from sqlalchemy import Column, MetaData, Table, String
+from sqlalchemy import Column, MetaData, Table, String, Integer
 
 def create_table(metadata: MetaData) -> Table:
     occ = Table(
@@ -6,6 +6,7 @@ def create_table(metadata: MetaData) -> Table:
         metadata,
         Column(
             'id',
+            Integer,
             primary_key=True
         ),
         Column(

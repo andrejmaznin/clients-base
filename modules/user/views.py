@@ -5,7 +5,7 @@ from modules.user.schemas.source import UserSourceSchema
 from lib.security.passwords import get_password_hash
 from lib.security.jwt.token import get_current_user
 from asyncpg.exceptions import UniqueViolationError
-from .exceptions import UniqueException, UserNotFoundException
+from .exceptions import UniqueException, EntityNotFoundException
 from modules.auth.views import oauth2_scheme
 
 
@@ -36,7 +36,7 @@ async def delete(token: str = Depends(oauth2_scheme)):
         if await user.delete():
             return {'message': 'ok'}
     
-    raise UserNotFoundException()
+    raise EntityNotFoundException()
 
 
 @router.put('/update', response_model=UserResponseSchema, status_code=200)

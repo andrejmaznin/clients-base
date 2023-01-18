@@ -1,11 +1,11 @@
 from pydantic import BaseModel
 
 class OccRequestSchema(BaseModel):
-    occ: str
+    occupation: str
 
     class Config:
         schema_extra = {
             "example": {
-                "occ": "Doctor"
+                "occupation": "Doctor"
             }
         }

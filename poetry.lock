@@ -92,6 +92,21 @@ docs = ["Sphinx (>=4.1.2,<4.2.0)", "sphinx-rtd-theme (>=0.5.2,<0.6.0)", "sphinxc
 test = ["flake8 (>=5.0.4,<5.1.0)", "uvloop (>=0.15.3)"]
 
 [[package]]
+name = "autopep8"
+version = "2.0.1"
+description = "A tool that automatically formats Python code to conform to the PEP 8 style guide"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "autopep8-2.0.1-py2.py3-none-any.whl", hash = "sha256:be5bc98c33515b67475420b7b1feafc8d32c1a69862498eda4983b45bffd2687"},
+    {file = "autopep8-2.0.1.tar.gz", hash = "sha256:d27a8929d8dcd21c0f4b3859d2d07c6c25273727b98afc984c039df0f0d86566"},
+]
+
+[package.dependencies]
+pycodestyle = ">=2.10.0"
+
+[[package]]
 name = "bcrypt"
 version = "4.0.1"
 description = "Modern password hashing for your software and your servers"
@@ -441,6 +456,18 @@ files = [
 ]
 
 [[package]]
+name = "pycodestyle"
+version = "2.10.0"
+description = "Python style guide checker"
+category = "dev"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "pycodestyle-2.10.0-py2.py3-none-any.whl", hash = "sha256:8a4eaf0d0495c7395bdab3589ac2db602797d76207242c17d470186815706610"},
+    {file = "pycodestyle-2.10.0.tar.gz", hash = "sha256:347187bdb476329d98f695c213d7295a846d1152ff4fe9bacb8a9590b8ee7053"},
+]
+
+[[package]]
 name = "pydantic"
 version = "1.10.4"
 description = "Data validation and settings management using python type hints"
@@ -710,4 +737,4 @@ standard = ["colorama (>=0.4)", "httptools (>=0.5.0)", "python-dotenv (>=0.13)",
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.11"
-content-hash = "7d61d04a57400e22369f600e7cbde643a8b4fb827299d47e20a9d649963d59ac"
+content-hash = "a3dd824451c7f131d8c25891270ed72ee4ca1411ded2227d6fa600fbef65c316"

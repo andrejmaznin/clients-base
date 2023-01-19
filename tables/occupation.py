@@ -12,7 +12,8 @@ def create_table(metadata: MetaData) -> Table:
         Column(
             'occupation',
             String(30),
-            unique=True
+            unique=True,
+            index=True
         )
     )
 

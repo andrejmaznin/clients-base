@@ -63,36 +63,6 @@ def create_table(metadata: MetaData) -> Table:
             default=False
         )
     )
-    Index(
-        'firstname_idx',
-        user.c.firstname,
-        postgresql_ops={
-            'description': 'gin_trgm_ops',
-        },
-        postgresql_using='gin'
-    )
-    Index(
-        'lastname_idx',
-        user.c.lastname, 
-        postgresql_ops={
-            'description': 'gin_trgm_ops',
-        },
-        postgresql_using='gin'
-    )
-    Index(
-        'city_idx',
-        user.c.city, 
-        postgresql_ops={
-            'description': 'gin_trgm_ops',
-        },
-        postgresql_using='gin'
-    )
-    Index(
-        'birthdate_idx',
-        user.c.birthdate, 
-        postgresql_ops={
-            'description': 'gin_trgm_ops',
-        },
-        postgresql_using='gin'
-    )
+    
+    
     return user

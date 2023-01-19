@@ -1,4 +1,4 @@
-from sqlalchemy import Column, text, MetaData, Table, String, Boolean, DATE, ForeignKey, Index
+from sqlalchemy import Column, text, MetaData, Table, String, DATE, ForeignKey, Index, Integer
 from sqlalchemy.dialects.postgresql import UUID, JSONB
 
 
@@ -21,12 +21,28 @@ def create_table(metadata: MetaData) -> Table:
             ForeignKey('occupation.occupation')
         ),
         Column(
+            'firstname',
+            String
+        ),
+        Column(
+            'lastname',
+            String
+        ),
+        Column(
+            'birthdate',
+            DATE
+        ),
+        Column(
+            'city',
+            String
+        ),
+        Column(
             'work_place',
-            String(30)
+            String
         ),
         Column(
             'income',
-            String(30)
+            Integer
         ),
         Column(
             'imgs',
@@ -34,15 +50,33 @@ def create_table(metadata: MetaData) -> Table:
         ),
         Column(
             'phone_number',
-            ForeignKey('user.phone_number')
+            String,
+            unique=True
         ),
         Column(
             'email',
-            ForeignKey('user.email')
+            String,
+            unique=True
+        ),
+        Column(
+            'linkedin',
+            String,
+            unique=True
+        ),
+        Column(
+            'vk',
+            String,
+            unique=True
+        ),
+        Column(
+            'instagram',
+            String,
+            unique=True
         ),
         Column(
             'telegram_id',
-            String(30)
+            String,
+            unique=True
         )
     )
     Index(
@@ -80,6 +114,78 @@ def create_table(metadata: MetaData) -> Table:
     Index(
         'email_idx',
         client.c.email,
+        postgresql_ops={
+            'description': 'gin_trgm_ops',
+        },
+        postgresql_using='gin'
+    )
+    Index(
+        'firstname_idx',
+        client.c.firstname,
+        postgresql_ops={
+            'description': 'gin_trgm_ops',
+        },
+        postgresql_using='gin'
+    )
+    Index(
+        'lastname_idx',
+        client.c.lastname, 
+        postgresql_ops={
+            'description': 'gin_trgm_ops',
+        },
+        postgresql_using='gin'
+    )
+    Index(
+        'city_idx',
+        client.c.city, 
+        postgresql_ops={
+            'description': 'gin_trgm_ops',
+        },
+        postgresql_using='gin'
+    )
+    Index(
+        'linkedin_idx',
+        client.c.linkedin, 
+        postgresql_ops={
+            'description': 'gin_trgm_ops',
+        },
+        postgresql_using='gin'
+    )
+    Index(
+        'vk_idx',
+        client.c.vk, 
+        postgresql_ops={
+            'description': 'gin_trgm_ops',
+        },
+        postgresql_using='gin'
+    )
+    Index(
+        'instagram_idx',
+        client.c.instagram, 
+        postgresql_ops={
+            'description': 'gin_trgm_ops',
+        },
+        postgresql_using='gin'
+    )
+    Index(
+        'vk_idx',
+        client.c.vk, 
+        postgresql_ops={
+            'description': 'gin_trgm_ops',
+        },
+        postgresql_using='gin'
+    )
+    Index(
+        'birhdate_idx',
+        client.c.birthdate, 
+        postgresql_ops={
+            'description': 'gin_trgm_ops',
+        },
+        postgresql_using='gin'
+    )
+    Index(
+        'city_idx',
+        client.c.city, 
         postgresql_ops={
             'description': 'gin_trgm_ops',
         },

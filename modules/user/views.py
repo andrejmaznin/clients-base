@@ -5,7 +5,8 @@ from modules.user.schemas.source import UserSourceSchema
 from lib.security.passwords import get_password_hash
 from lib.security.jwt.token import get_current_user
 from asyncpg.exceptions import UniqueViolationError
-from .exceptions import UniqueException, EntityNotFoundException
+from .exceptions import UniqueException
+from modules.exceptions import EntityNotFoundException
 from modules.auth.views import oauth2_scheme
 
 

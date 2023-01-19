@@ -1,9 +1,11 @@
 from fastapi import APIRouter
-from .schemas.request import OccRequestSchema
-from .schemas.response import OccResponseSchema, ListOccResponseSchema
-from .schemas.source import OccSourceSchema
+from ..schemas.occupation.request import OccRequestSchema
+from ..schemas.occupation.response import OccResponseSchema, ListOccResponseSchema
+from ..schemas.occupation.source import OccSourceSchema
 from asyncpg.exceptions import UniqueViolationError
-from modules.user.exceptions import UniqueException, EntityNotFoundException
+from modules.user.exceptions import UniqueException
+from modules.exceptions import EntityNotFoundException
+
 
 router = APIRouter()
 
@@ -31,5 +33,13 @@ async def delete(data: OccRequestSchema):
 
 @router.get('/', response_model=ListOccResponseSchema)
 async def get_all():
-    occ = await OccSourceSchema.get_all()
-    return occ
+    return await OccSourceSchema.get_all()
+    
+
+
+@router.get('/hint/{hint}', response_model=ListOccResponseSchema)
+async def hint(hint: str):
+    return await OccSourceSchema.get_with_hint(hint)
+    
+
+

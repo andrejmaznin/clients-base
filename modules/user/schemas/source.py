@@ -49,6 +49,6 @@ class UserSourceSchema(PostgreSQLMixin, BaseModel):
     async def get_by_email(cls, email: str):
         query = cls.table.select().where(cls.table.c.email==email)
         entity = await get_connection().fetch_one(query=query)
-        if entity:
+        if entity is not None:
             return cls.from_orm(entity)
 

@@ -31,3 +31,11 @@ class OccSourceSchema(PostgreSQLMixin, BaseModel):
         entity = await get_connection().fetch_all(query=query)
         if entity:
             return ListOccResponseSchema.from_orm(entity)
+    
+
+    @classmethod 
+    async def get_with_hint(cls, hint: str):
+        entity = await get_connection().fetch_all(query='SELECT id, occupation, occupation <-> :hint AS dist FROM occupation ORDER BY dist LIMIT 10', values={'hint': hint})
+        if entity:
+            return ListOccResponseSchema.from_orm(entity)
+    

@@ -19,6 +19,7 @@ bcrypt = "^4.0.1"
 alembic = "^1.9.1"
 python-multipart = "^0.0.5"
 python-jose = "^3.3.0"
+pre-commit = "^2.21.0"
 
 
 [tool.poetry.group.dev.dependencies]

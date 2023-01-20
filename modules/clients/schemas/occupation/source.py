@@ -1,6 +1,6 @@
 
 from pydantic import BaseModel
-from .response import OccResponseSchema, ListOccResponseSchema
+from .response import OccResponseSchema
 from lib.postgresql.mixin import PostgreSQLMixin
 from lib.postgresql.utils import postgresql
 from lib.postgresql import get_connection
@@ -30,12 +30,12 @@ class OccSourceSchema(PostgreSQLMixin, BaseModel):
         query = cls.table.select()
         entity = await get_connection().fetch_all(query=query)
         if entity:
-            return ListOccResponseSchema.from_orm(entity)
+            return entity
     
 
     @classmethod 
     async def get_with_hint(cls, hint: str):
         entity = await get_connection().fetch_all(query='SELECT id, occupation, occupation <-> :hint AS dist FROM occupation ORDER BY dist LIMIT 10', values={'hint': hint})
         if entity:
-            return ListOccResponseSchema.from_orm(entity)
+            return entity
     

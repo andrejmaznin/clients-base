@@ -11,6 +11,7 @@ from typing import List
 
 router = APIRouter()
 
+
 @router.post('/create', response_model=OccResponseSchema, dependencies=[Depends(admin_auth)])
 async def create(data: OccRequestSchema):
     payload = data.dict()
@@ -29,19 +30,15 @@ async def delete(data: OccRequestSchema):
     if occ:
         if await occ.delete():
             return
-    
+
     raise EntityNotFoundException()
 
 
 @router.get('/', response_model=List[OccResponseSchema])
 async def get_all():
-    return await OccSourceSchema.get_all() 
-    
+    return await OccSourceSchema.get_all()
 
 
 @router.get('/hint/{hint}', response_model=List[HintResponseSchema])
 async def hint(hint: str):
     return await OccSourceSchema.get_with_hint(hint)
-    
-
-

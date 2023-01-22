@@ -20,7 +20,7 @@ async def create(data: OccRequestSchema):
 
         await occ.insert()
         return occ.get_response()
-    except UniqueViolationError as uniq:
+    except UniqueViolationError:
         raise UniqueException()
 
 

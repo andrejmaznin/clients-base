@@ -1,8 +1,8 @@
 from pydantic import BaseModel
-
+from uuid import UUID
 
 class OccResponseSchema(BaseModel):
-    id: int
+    id: UUID
     occupation: str
 
 

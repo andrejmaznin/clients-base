@@ -1,4 +1,5 @@
-from sqlalchemy import Column, MetaData, Table, String, Integer
+from sqlalchemy import Column, MetaData, Table, String, text
+from sqlalchemy.dialects.postgresql import UUID
 
 def create_table(metadata: MetaData) -> Table:
     occ = Table(
@@ -6,7 +7,8 @@ def create_table(metadata: MetaData) -> Table:
         metadata,
         Column(
             'id',
-            Integer,
+            UUID,
+            server_default=text('gen_random_uuid()'),
             primary_key=True
         ),
         Column(

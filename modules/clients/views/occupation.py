@@ -3,8 +3,7 @@ from ..schemas.occupation.request import OccRequestSchema
 from ..schemas.occupation.response import OccResponseSchema, HintResponseSchema
 from ..schemas.occupation.source import OccSourceSchema
 from asyncpg.exceptions import UniqueViolationError
-from modules.user.exceptions import UniqueException
-from modules.exceptions import EntityNotFoundException
+from modules.exceptions import EntityNotFoundException, UniqueException
 from dependencies.admin_auth import admin_auth
 from typing import List
 

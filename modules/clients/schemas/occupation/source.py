@@ -7,6 +7,7 @@ from lib.postgresql import get_connection
 from tables import occupation
 from uuid import UUID
 
+
 @postgresql(table=occupation)
 class OccSourceSchema(PostgreSQLMixin, BaseModel):
     id: UUID | None
@@ -34,7 +35,7 @@ class OccSourceSchema(PostgreSQLMixin, BaseModel):
     @classmethod
     async def get_with_hint(cls, hint: str):
         entity = await get_connection().fetch_all(
-            query='SELECT id, occupation, occupation <-> :hint AS dist FROM occupation ORDER BY dist LIMIT 10', 
+            query='SELECT id, occupation, occupation <-> :hint AS dist FROM occupation ORDER BY dist LIMIT 10',
             values={'hint': hint}
         )
         if entity:

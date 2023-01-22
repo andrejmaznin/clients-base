@@ -6,6 +6,7 @@ from lib.security.jwt.exceptions import DecodeException, decode_exception_handle
 from lib.postgresql import database, engine
 from modules.user import router as user_router
 from modules.auth import router as auth_router
+from modules.clients import router as client_router
 from tables import metadata as psql_metadata
 
 load_dotenv()
@@ -24,6 +25,8 @@ app.add_middleware(
 
 app.include_router(user_router, prefix='/user')
 app.include_router(auth_router, prefix='/auth')
+app.include_router(client_router, prefix='/client')
+
 
 app.add_exception_handler(DecodeException, decode_exception_handler)
 
@@ -42,4 +45,4 @@ async def shutdown():
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='localhost', port=8000)
+    uvicorn.run(app, host='localhost', port=8000, reload=True)

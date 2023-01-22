@@ -1,4 +1,4 @@
-from sqlalchemy import Column, text, MetaData, Table, String, Boolean, DATE
+from sqlalchemy import Column, text, MetaData, Table, String, Boolean, DATE, Index
 from sqlalchemy.dialects.postgresql import UUID
 
 
@@ -63,5 +63,5 @@ def create_table(metadata: MetaData) -> Table:
             default=False
         )
     )
-
+    
     return user

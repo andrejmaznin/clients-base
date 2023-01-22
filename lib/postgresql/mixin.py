@@ -6,7 +6,6 @@ from pydantic import BaseModel
 from lib.postgresql import database, get_connection
 from lib.postgresql.utils import transaction
 
-
 class PostgreSQLMixin(BaseModel):
     class Config:
         orm_mode = True

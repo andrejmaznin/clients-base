@@ -50,33 +50,31 @@ def create_table(metadata: MetaData) -> Table:
         ),
         Column(
             'phone_number',
-            String,
-            unique=True
+            String
         ),
         Column(
             'email',
-            String,
-            unique=True
+            String
         ),
         Column(
             'linkedin',
             String,
-            unique=True
+            nullable=True
         ),
         Column(
             'vk',
             String,
-            unique=True
+            nullable=True
         ),
         Column(
             'instagram',
             String,
-            unique=True
+            nullable=True
         ),
         Column(
             'telegram_id',
             String,
-            unique=True
+            nullable=True
         )
     )
     Index(

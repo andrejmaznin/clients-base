@@ -20,7 +20,7 @@ async def create(data: OccRequestSchema):
         await occ.insert()
         return occ.get_response()
     except UniqueViolationError:
-        raise UniqueException()
+        raise UniqueException(occ.occupation)
 
 
 @router.delete('/delete', dependencies=[Depends(admin_auth)], status_code=200)

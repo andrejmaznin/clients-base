@@ -1,5 +1,3 @@
-from fastapi import HTTPException
-
 
 class EntityNotFoundException(HTTPException):
     def __init__(self):
@@ -7,6 +5,5 @@ class EntityNotFoundException(HTTPException):
 
 
 class UniqueException(HTTPException):
-    def __init__(self):
-        super().__init__(detail={'error': 'Entity already exists'}, status_code=409)
-
+    def __init__(self, entity: str):
+        super().__init__(detail={'error': f'{entity} already exists'}, status_code=409)

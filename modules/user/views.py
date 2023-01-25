@@ -26,7 +26,7 @@ async def register(data: CreateUserRequestSchema):
         
         return user.get_response()
     except UniqueViolationError:
-        raise UniqueException()
+        raise UniqueException(user.email)
 
 
 @router.delete('/delete', status_code=200)

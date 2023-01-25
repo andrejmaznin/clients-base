@@ -3,6 +3,7 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from lib.security.jwt.exceptions import DecodeException, decode_exception_handler
+from modules.exceptions import value_exception_handler
 from lib.postgresql import database, engine
 from modules.user import router as user_router
 from modules.auth import router as auth_router
@@ -29,6 +30,7 @@ app.include_router(client_router, prefix='/client')
 
 
 app.add_exception_handler(DecodeException, decode_exception_handler)
+
 
 
 @app.on_event('startup')

@@ -3,12 +3,12 @@ from dotenv import load_dotenv
 from fastapi import FastAPI
 from starlette.middleware.cors import CORSMiddleware
 from lib.security.jwt.exceptions import DecodeException, decode_exception_handler
-from modules.exceptions import value_exception_handler
 from lib.postgresql import database, engine
 from modules.user import router as user_router
 from modules.auth import router as auth_router
 from modules.clients import router as client_router
 from tables import metadata as psql_metadata
+
 
 load_dotenv()
 
@@ -47,4 +47,4 @@ async def shutdown():
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='localhost', port=8000, reload=True)
+    uvicorn.run(app, host='localhost', port=8000)

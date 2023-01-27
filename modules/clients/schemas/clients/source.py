@@ -1,5 +1,5 @@
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr, Json
 from pydantic.error_wrappers import ErrorWrapper
 from lib.postgresql.mixin import PostgreSQLMixin, get_connection
 from lib.postgresql.utils import postgresql
@@ -19,13 +19,21 @@ class ClientSourceSchema(PostgreSQLMixin, BaseModel):
     city: str
     work_place: str
     income: int
-    imgs: dict
+    imgs: dict | Json
     phone_number: str
-    email: str
+    email: EmailStr
     linkedin: str | None
     vk: str | None
     instagram: str | None
     telegram_id: str | None
+
+
+    @classmethod
+    async def get_by_user(cls, client_id: UUID, user_id: UUID):
+        query = cls.table.select().where(cls.table.c.id==client_id, cls.table.c.user==user_id)
+        entity = await get_connection().fetch_one(query=query)
+        if entity:
+            return cls(**entity)
 
     async def valid_tg(self):
         if self.telegram_id:

@@ -1,3 +1,5 @@
+from fastapi import HTTPException
+
 
 class EntityNotFoundException(HTTPException):
     def __init__(self):

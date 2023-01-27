@@ -5,8 +5,8 @@ from modules.user.schemas.source import UserSourceSchema
 from lib.security.passwords import get_password_hash
 from lib.security.jwt.token import get_current_user
 from asyncpg.exceptions import UniqueViolationError
-from modules.exceptions import UniqueException
-from modules.exceptions import EntityNotFoundException
+from modules.exceptions import UniqueException, EntityNotFoundException
+
 
 
 router = APIRouter()
@@ -50,4 +50,4 @@ async def update(data: UpdateUserRequestSchema, user: UserSourceSchema | None = 
         u = await user.update(**payload)
         return u.get_response()
         
-    raise UserNotFoundException()
+    raise EntityNotFoundException()

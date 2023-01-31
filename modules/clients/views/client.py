@@ -8,7 +8,9 @@ from asyncpg.exceptions import UniqueViolationError, ForeignKeyViolationError
 from modules.exceptions import UniqueException, EntityNotFoundException
 from ..exceptions import OccNotExistException
 from fastapi.exceptions import RequestValidationError
+from ..schemas.hint.source import HintClientSourceSchema
 from uuid import UUID
+from ..schemas.hint.response import HintClientResponseSchema
 
 
 router = APIRouter()
@@ -68,3 +70,10 @@ async def delete(payload: DeleteClientRequestSchema, user: UserSourceSchema | No
         return succesed
 
     raise EntityNotFoundException()
+
+
+
+@router.post('/hint', response_model=HintClientResponseSchema)
+async def hint(hint_client: HintClientSourceSchema, user: UserSourceSchema | None = Depends(get_current_user)):
+    if user:
+        return await hint_client.get_hint(user_id=user.id)

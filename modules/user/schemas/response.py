@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class UserResponseSchema(BaseModel):
@@ -10,7 +10,7 @@ class UserResponseSchema(BaseModel):
     firstname: str
     lastname: str
     phone_number: Optional[str] = None
-    email: str
+    email: EmailStr
     birthdate: date
     country: Optional[str] = None
     city: Optional[str] = None

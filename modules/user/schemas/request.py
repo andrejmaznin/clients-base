@@ -1,7 +1,7 @@
 from datetime import date
 from typing import Optional
 
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 
 
 class CreateUserRequestSchema(BaseModel):
@@ -9,7 +9,7 @@ class CreateUserRequestSchema(BaseModel):
     lastname: str
     password: str
     phone_number: Optional[str] = None
-    email: str
+    email: EmailStr
     birthdate: date
     country: Optional[str] = None
     city: Optional[str] = None
@@ -20,7 +20,7 @@ class UpdateUserRequestSchema(BaseModel):
     lastname: str | None
     password: str | None
     phone_number: str | None
-    email: str | None
+    email: EmailStr | None
     birthdate: date | None
     country: str | None
     city: str | None

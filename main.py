@@ -9,6 +9,7 @@ from modules.auth import router as auth_router
 from modules.clients import router as client_router
 from tables import metadata as psql_metadata
 
+
 load_dotenv()
 
 app = FastAPI()
@@ -31,6 +32,7 @@ app.include_router(client_router, prefix='/client')
 app.add_exception_handler(DecodeException, decode_exception_handler)
 
 
+
 @app.on_event('startup')
 async def startup():
     async with engine.begin() as conn:
@@ -45,4 +47,4 @@ async def shutdown():
 
 
 if __name__ == '__main__':
-    uvicorn.run(app, host='localhost', port=8000, reload=True)
+    uvicorn.run(app, host='localhost', port=8000)

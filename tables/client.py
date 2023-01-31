@@ -50,35 +50,34 @@ def create_table(metadata: MetaData) -> Table:
         ),
         Column(
             'phone_number',
-            String,
-            unique=True
+            String
         ),
         Column(
             'email',
-            String,
-            unique=True
+            String
         ),
         Column(
             'linkedin',
             String,
-            unique=True
+            nullable=True
         ),
         Column(
             'vk',
             String,
-            unique=True
+            nullable=True
         ),
         Column(
             'instagram',
             String,
-            unique=True
+            nullable=True
         ),
         Column(
             'telegram_id',
             String,
-            unique=True
+            nullable=True
         )
     )
+
     Index(
         'income_idx',
         client.c.income,
@@ -160,6 +159,14 @@ def create_table(metadata: MetaData) -> Table:
         postgresql_using='gin'
     )
     Index(
+        'telegram_id_idx',
+        client.c.telegram_id, 
+        postgresql_ops={
+            'description': 'gin_trgm_ops',
+        },
+        postgresql_using='gin'
+    )
+    Index(
         'instagram_idx',
         client.c.instagram, 
         postgresql_ops={
@@ -168,15 +175,7 @@ def create_table(metadata: MetaData) -> Table:
         postgresql_using='gin'
     )
     Index(
-        'vk_idx',
-        client.c.vk, 
-        postgresql_ops={
-            'description': 'gin_trgm_ops',
-        },
-        postgresql_using='gin'
-    )
-    Index(
-        'birhdate_idx',
+        'birthdate_idx',
         client.c.birthdate, 
         postgresql_ops={
             'description': 'gin_trgm_ops',
@@ -184,8 +183,8 @@ def create_table(metadata: MetaData) -> Table:
         postgresql_using='gin'
     )
     Index(
-        'city_idx',
-        client.c.city, 
+        'phone_number_idx',
+        client.c.phone_number, 
         postgresql_ops={
             'description': 'gin_trgm_ops',
         },

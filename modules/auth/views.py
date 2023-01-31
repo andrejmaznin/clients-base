@@ -4,11 +4,11 @@ from .internals import authenticate_user
 from .exceptions import InvalidCredentials
 from lib.security.jwt.token import get_current_user
 from modules.user.schemas.response import UserResponseSchema
-from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
+from modules.user.schemas.source import UserSourceSchema
+from fastapi.security import OAuth2PasswordRequestForm
 
 
 router = APIRouter()
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl='/auth/token')
 
 
 @router.post('/token')
@@ -23,8 +23,7 @@ async def token(form_data: OAuth2PasswordRequestForm = Depends()):
 
 
 @router.get('/', response_model=UserResponseSchema)
-async def login(token: str = Depends(oauth2_scheme)):
-    user = await get_current_user(token=token)
+async def login(user: UserSourceSchema | None = Depends(get_current_user)):
     if user:
         return user.get_response()
 
